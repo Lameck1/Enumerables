@@ -1,11 +1,11 @@
 class Array
-  def my_each 
+  def my_each
     for item in self
       yield(item)
     end
   end
 
-  def my_each_with_index 
+  def my_each_with_index
     self.length.times do |index|
       yield self[index], index
     end
@@ -19,13 +19,19 @@ class Array
     p selected
   end
 
+  def my_all
+    for item in self
+      return false unless yield(item) 
+       
+    end
+true
+  end
+
 end
 
-
-
-arr = ["Tom", "Bob", "Marley"]
+arr = ["Tom", "Tom", "Tom"]
 # arr.my_each do |x|
 #   puts x + 10
 # end
 
-arr.my_select{|person| person != "Tom"}
+p arr.my_all { |person| person == "Tom" }
