@@ -34,18 +34,35 @@ class Array
   end
 
   def my_none?
-    each do |item|
+    my_each do |item|
       return true unless yield(item)
     end
     false
   end
 
+def my_count
+  count = 0
+  my_each do |item|
+    if yield item
+      count += 1
+    end
+  end
+  count
+end
+
+def my_map
+  new_arr = []
+  for item in self
+    new_arr << yield(item)
+  end
+new_arr
+end
 
 end
 
-arr = [1,1,1,1]
+arr = [1,4,1,2]
 # arr.my_each do |x|
 #   puts x + 10
 # end
 
-p arr.my_none? { |ele| ele == 2 }
+p arr.my_map { |ele| ele * 2 }
