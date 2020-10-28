@@ -1,4 +1,5 @@
-require_relative 'helpers'
+require_relative "helpers"
+
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -13,9 +14,6 @@ module Enumerable
     self
   end
 
-  # array = [1, 2, 3, 4]
-  # array.my_each { |x| p x.to_s  }
-
   def my_each_with_index
     return to_enum(:my_each) unless block_given?
 
@@ -26,9 +24,6 @@ module Enumerable
     self
   end
 
-  # array = [1, 2, 3, 4]
-  # array.my_each_with_index { |x, i| puts ("element #{x} at index #{i}") }
-
   def my_select
     return to_enum(:my_each) unless block_given?
 
@@ -38,9 +33,6 @@ module Enumerable
     end
     selected
   end
-
-  # array = [1, 2, 3, 4]
-  # p array.my_select { |x| x % 2 == 0 }
 
   def my_all?(*arg)
     return Helper.match_by_type_all(self, arg[0]) if arg.length.positive?
@@ -56,10 +48,6 @@ module Enumerable
     true
   end
 
-  # array = [2, 7, 8, 9]
-  # p array.my_all?(Numeric)
-  # p array.my_all? { |x| x.length == 3}
-
   def my_any?(*arg)
     return Helper.match_by_type_any(self, arg[0]) if arg.length.positive?
 
@@ -73,10 +61,6 @@ module Enumerable
     end
     false
   end
-
-  # array = [1, 2, 3, 4]
-  # p array.my_any? { |x| x == 7 }
-  # p array.my_any? { |x| x == 3 }
 
   def my_none?(*arg)
     return Helper.match_by_type_none(self, arg[0]) if arg.length.positive?
@@ -92,10 +76,6 @@ module Enumerable
     false
   end
 
-  # array = [1, 2, 3, 4]
-  # p array.my_none?(String)
-  # p array.my_none? { |x| x == 3 }
-
   def my_count
     count = 0
     my_each do |item|
@@ -103,9 +83,6 @@ module Enumerable
     end
     count
   end
-
-  # array = [1, 7, 3, 7]
-  # p array.my_count { |x| x == 7 }
 
   def my_map(*arg, &block)
     return to_enum(:my_each) unless block_given?
@@ -123,9 +100,6 @@ module Enumerable
     new_arr
   end
 
-  # array = [1, 7, 3, 7]
-  # p array.my_map { |x| x * 7 }
-
   def my_inject(*arg)
     if arg.length.positive?
       accumulator = arg[0]
@@ -139,11 +113,12 @@ module Enumerable
     end
     accumulator
   rescue LocalJumpError
-    puts 'Please pass a block to this method!'
+    puts "Please pass a block to this method!"
   rescue NoMethodError
-    puts 'Only concatination(+) would work for non-integers'
+    puts "Only concatination(+) would work for non-integers"
   end
 end
 
-# array = [2, 3, 4]
-# p array.my_inject { |x, y| x / y}
+def multiply_els(array)
+  array.my_inject { |x, y| x * y }
+end
