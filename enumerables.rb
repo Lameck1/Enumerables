@@ -56,11 +56,12 @@ module Enumerable
     true
   end
 
-  array = [2, 7, 8, 9]
-  p array.my_all?(Numeric)
+  # array = [2, 7, 8, 9]
+  # p array.my_all?(Numeric)
   # p array.my_all? { |x| x.length == 3}
 
-  def my_any?
+  def my_any?(*arg)
+    return Helper.match_by_type_any(self, arg[0]) if arg.length.positive?
     # block is not given and truthy element is found => TRUE
     my_each { |item| return true if item && !block_given? }
     # block is not given and truthy element is not found => FALSE
