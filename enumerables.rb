@@ -12,19 +12,24 @@ module Enumerable
     self
   end
 
-  #array = [1, 2, 3, 4]
-  #array.my_each { |x| p x + 1 }
+  # array = [1, 2, 3, 4]
+  # array.my_each { |x| p x.to_s  }
 
   def my_each_with_index
-    length.times do |index|
-      yield self[index], index
+    return to_enum(:my_each) unless block_given?
+
+    arr = *self
+    size.times do |index|
+      yield arr[index], index
     end
+    self
   end
 
-  #array = [1, 2, 3, 4]
-  #array.my_each_with_index { |x, i| puts ("element #{x} at index #{i}") }
+  # array = [1, 2, 3, 4]
+  # array.my_each_with_index { |x, i| puts ("element #{x} at index #{i}") }
 
   def my_select
+    return to_enum(:my_each) unless block_given?
     selected = []
     my_each do |ele|
       selected.push(ele) if yield ele
@@ -35,27 +40,38 @@ module Enumerable
   #array = [1, 2, 3, 4]
   #p array.my_select { |x| x % 2 == 0 }
 
-  def my_all?
+  def my_all?(*arg)
+
+    # block is not given and falsy element is found, => FALSE
+    my_each { |item| return false unless item || block_given? }
+    # block is not given and falsy element is not found, => TRUE
+    return true unless block_given?
+
     my_each do |item|
       return false unless yield(item)
     end
     true
   end
 
-  #array = [1, 1, 1, 1]
-  #p array.my_all? { |x| x == 1 }
-  #p array.my_all? { |x| x == 2 }
+  # array = ["hey", "hel", "hii"]
+  # p array.my_all? { |x| x.length == 3}
+  # p array.my_all? { |x| x.length == 3}
 
   def my_any?
-    my_each do |ele|
-      return true if yield ele
+    # block is not given and truthy element is found => TRUE
+    my_each { |item| return true if item && !block_given? }
+    # block is not given and truthy element is not found => FALSE
+    return false unless block_given?
+
+    my_each do |item|
+      return true if yield item
     end
     false
   end
 
-  #array = [1, 2, 3, 4]
-  #p array.my_any? { |x| x == 7 }
-  #p array.my_any? { |x| x == 3 }
+  # array = [1, 2, 3, 4]
+  # p array.my_any? { |x| x == 7 }
+  # p array.my_any? { |x| x == 3 }
 
   def my_none?
     my_each do |item|
