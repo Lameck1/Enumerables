@@ -72,6 +72,6 @@ module Enumerable
   end
 end
 
-array = [4, 7]
+array = [2, 3, 4]
 
 array.my_each { |x| p x + 2 }
