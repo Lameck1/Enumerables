@@ -76,11 +76,22 @@ module Enumerable
     false
   end
 
-  def my_count
-    count = 0
-    my_each do |item|
-      count += 1 if yield item
+  def my_count(*arg)
+    if arg.length.positive?
+      count = 0
+      my_each do |ele|
+        count += 1 if ele == arg[0]
+      end
+      return count
+    elsif arg.length.zero? && !block_given?
+      count = 0
+      my_each do |_ele|
+        count += 1
+      end
+      return count
     end
+    count = 0
+    my_each { |ele| count += 1 if yield ele }
     count
   end
 
@@ -94,13 +105,16 @@ module Enumerable
     elsif arg.length.zero? && block
       proc = block
     end
-    my_each do |item|
-      new_arr.push(proc.call(item))
-    end
+    my_each { |item| new_arr.push(proc.call(item)) }
     new_arr
   end
 
   def my_inject(*arg)
+    raise LocalJumpError, 'no block given?' unless block_given? || arg.length.positive?
+
+    return Helper.block_not_given(self, param) unless block_given?
+
+    # if block is given
     if arg.length.positive?
       accumulator = arg[0]
       i = 0
@@ -112,10 +126,6 @@ module Enumerable
       accumulator = yield accumulator, *self[index]
     end
     accumulator
-  rescue LocalJumpError
-    puts 'Please pass a block to this method!'
-  rescue NoMethodError
-    puts 'Only concatination(+) would work for non-integers'
   end
 end
 
