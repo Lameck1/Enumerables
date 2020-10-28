@@ -43,16 +43,14 @@ class Array
   def my_count
     count = 0
     my_each do |item|
-      if yield item
-        count += 1
-      end
+      count += 1 if yield item
     end
     count
   end
 
   def my_map
     new_arr = []
-    for item in self
+    my_each do |item|
       new_arr << yield(item)
     end
     new_arr
