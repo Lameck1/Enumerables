@@ -21,7 +21,7 @@ module Helper
     case type
     when Regexp
       arg.my_each do |item|
-        return true if type.match(ele.to_s)
+        return true if type.match(item.to_s)
       end
     when Class
       arg.my_each do |item|
@@ -39,7 +39,7 @@ module Helper
     case type
     when Regexp
       arg.my_each do |item|
-        return false if type.match(ele.to_s)
+        return false if type.match(item.to_s)
       end
     when Class
       arg.my_each do |item|
