@@ -1,8 +1,13 @@
 class Array
   def my_each
-    each do |item|
-      yield(item)
+    arr = self
+    arr = arr.to_a if arr.class == Range
+    arr = arr.to_a if arr.class == Hash
+
+    for item in arr
+      yield item
     end
+    self
   end
 
   def my_each_with_index
