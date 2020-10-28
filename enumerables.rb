@@ -23,7 +23,7 @@ module Enumerable
     my_each do |ele|
       selected.push(ele) if yield ele
     end
-    p selected
+    selected
   end
 
   def my_all?
@@ -70,8 +70,31 @@ module Enumerable
     end
     result
   end
+
+
+  def my_inject(*arg)
+    begin
+      if arg.length.positive?
+        accumulator = arg[0]
+        i = 0
+      elsif arg.length.zero?
+        accumulator = first
+        i = 1
+      end
+
+      (i..(size - 1)).my_each do |index|
+        accumulator = yield accumulator, *self[index]
+      end
+      accumulator
+
+    rescue LocalJumpError
+      puts "Please pass a block to this method!"
+      
+    rescue NoMethodError
+      puts "Only concatination(+) would work for non-integers"
+    end
+  end
 end
 
-array = [2, 3, 4]
-
-array.my_each { |x| p x + 2 }
+# array = [2, 3, 4]
+# p array.my_inject { |x, y| x / y}
