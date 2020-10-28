@@ -62,6 +62,7 @@ module Enumerable
 
   def my_any?(*arg)
     return Helper.match_by_type_any(self, arg[0]) if arg.length.positive?
+
     # block is not given and truthy element is found => TRUE
     my_each { |item| return true if item && !block_given? }
     # block is not given and truthy element is not found => FALSE
@@ -77,7 +78,14 @@ module Enumerable
   # p array.my_any? { |x| x == 7 }
   # p array.my_any? { |x| x == 3 }
 
-  def my_none?
+  def my_none?(*arg)
+    return Helper.match_by_type_none(self, arg[0]) if arg.length.positive?
+
+    # block is not given and truthy element is found => TRUE
+    my_each { |item| return false if item && !block_given? }
+    # block is not given and truthy element is not found => FALSE
+    return true unless block_given?
+
     my_each do |item|
       return true unless yield(item)
     end
@@ -85,7 +93,7 @@ module Enumerable
   end
 
   # array = [1, 2, 3, 4]
-  # p array.my_none? { |x| x == 7 }
+  # p array.my_none?(String)
   # p array.my_none? { |x| x == 3 }
 
   def my_count
