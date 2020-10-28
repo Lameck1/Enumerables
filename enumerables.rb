@@ -79,24 +79,25 @@ module Enumerable
   #array = [1, 7, 3, 7]
   #p array.my_count { |x| x == 7 }
 
-  def my_map
+  def my_map(*arg, &block)
+    return to_enum(:my_each) unless block_given?
+  
+    # takes a proc or block, will only use proc if both are provided
     new_arr = []
+    if arg.length.positive?
+      proc = Proc.new{arg[0]}
+    elsif arg.length.zero? && block
+      proc = block
+    end
+  
     my_each do |item|
-      new_arr << yield(item)
+      new_arr.push(proc.call(item))
     end
     new_arr
   end
 
   #array = [1, 7, 3, 7]
   #p array.my_map { |x| x * 7 }
-
-  def my_inject
-    result = 0
-    my_each do |i|
-      result = yield result, i
-    end
-    result
-  end
 
   def my_inject(*arg)
     begin
@@ -107,13 +108,15 @@ module Enumerable
         accumulator = first
         i = 1
       end
-
+  
       (i..(size - 1)).my_each do |index|
         accumulator = yield accumulator, *self[index]
       end
       accumulator
+  
     rescue LocalJumpError
       puts "Please pass a block to this method!"
+      
     rescue NoMethodError
       puts "Only concatination(+) would work for non-integers"
     end
