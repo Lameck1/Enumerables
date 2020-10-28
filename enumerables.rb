@@ -55,7 +55,7 @@ class Array
     for item in self
       new_arr << yield(item)
     end
-  new_arr
+    new_arr
   end
 
   def my_inject
@@ -65,12 +65,11 @@ class Array
     end
     result
   end
-
 end
 
-arr = [4,5]
+arr = [4, 5]
 # arr.my_each do |x|
 #   puts x + 10
 # end
 
-p arr.my_inject { |sum, number| sum - number}
+p arr.my_inject { |sum, number| sum - number }
