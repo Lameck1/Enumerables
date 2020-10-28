@@ -25,7 +25,7 @@ module Helper
       end
     when Class
       arg.my_each do |item|
-        return true if ele.is_a?(type)
+        return true if item.is_a?(type)
       end
     else
       arg.my_each do |item|
@@ -33,5 +33,23 @@ module Helper
       end
     end
     false
+  end
+
+  def self.match_by_type_none(arg, type)
+    case type
+    when Regexp
+      arg.my_each do |item|
+        return false if type.match(ele.to_s)
+      end
+    when Class
+      arg.my_each do |item|
+        return false if item.is_a?(type)
+      end
+    else
+      arg.my_each do |item|
+        return false if item == type
+      end
+    end
+    true
   end
 end
