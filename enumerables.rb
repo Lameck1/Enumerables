@@ -1,5 +1,7 @@
-class Array
+module Enumerable
   def my_each
+    return to_enum (:my_each) unless block_given?
+
     arr = self
     arr = arr.to_a if arr.class == Range
     arr = arr.to_a if arr.class == Hash
@@ -70,9 +72,6 @@ class Array
   end
 end
 
-arr = [4, 5]
-# arr.my_each do |x|
-#   puts x + 10
-# end
+array = [4, 7]
 
-p arr.my_inject { |sum, number| sum - number }
+array.my_each { |x| p x + 2 }
