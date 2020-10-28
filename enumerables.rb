@@ -112,7 +112,7 @@ module Enumerable
   def my_inject(*arg)
     raise LocalJumpError, 'no block given?' unless block_given? || arg.length.positive?
 
-    return Helper.block_not_given(self, param) unless block_given?
+    return Helper.block_not_given(self, arg) unless block_given?
 
     # if block is given
     if arg.length.positive?
