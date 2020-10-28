@@ -1,4 +1,4 @@
-require_relative "helpers"
+require_relative 'helpers'
 
 module Enumerable
   def my_each
@@ -113,9 +113,9 @@ module Enumerable
     end
     accumulator
   rescue LocalJumpError
-    puts "Please pass a block to this method!"
+    puts 'Please pass a block to this method!'
   rescue NoMethodError
-    puts "Only concatination(+) would work for non-integers"
+    puts 'Only concatination(+) would work for non-integers'
   end
 end
 
